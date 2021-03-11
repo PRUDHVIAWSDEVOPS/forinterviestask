@@ -1,0 +1,186 @@
+Resources:
+  PRUDHVIVPC:
+    Type: 'AWS::EC2::VPC'
+    Properties: {}
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 59ee67e9-3970-4a10-9911-dba8ee70c5e0
+  PRUDHVIIGW:
+    Type: 'AWS::EC2::InternetGateway'
+    Properties: {}
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 00aef6d2-f173-4484-bd3c-c1aba706068e
+  PUBLICSUBNET01:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      VpcId: !Ref PRUDHVIVPC
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 6150155d-7138-45b7-99ed-a196deed7d68
+  PUBLICSUBNET02:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      VpcId: !Ref PRUDHVIVPC
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: e8734d75-997e-4258-9f8f-d592ceed86d5
+  ROUTETABLE01:
+    Type: 'AWS::EC2::RouteTable'
+    Properties:
+      VpcId: !Ref PRUDHVIVPC
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: e5e07a62-63b9-458c-a2f3-eafd3a440121
+    DependsOn:
+      - PUBLICSUBNET02
+      - PUBLICSUBNET01
+  SGFORROUTETABLES:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      VpcId: !Ref PRUDHVIVPC
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: e83a176c-6214-4ea4-8f1b-df0ce0bc5444
+    DependsOn:
+      - EC2IL5JM
+      - EC2I1SN4B
+  PRUS3BUCKET:
+    Type: 'AWS::S3::Bucket'
+    Properties: {}
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 5d6f29e9-9d7b-46e5-887b-ca1bc01e496f
+    DependsOn:
+      - EC2IL5JM
+      - EC2I1SN4B
+  S3POLICY:
+    Type: 'AWS::S3::BucketPolicy'
+    Properties: {}
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 213d7fe7-d25b-4ef7-a864-22cc3e6a17bc
+    DependsOn:
+      - PRUS3BUCKET
+  EC2SGHDNN:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      VpcId: !Ref PRUDHVIVPC
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 0246580d-6927-47aa-9c5d-cbfb75246f0c
+    DependsOn:
+      - RDSSECURITYGP
+  EC2I1SN4B:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      NetworkInterfaces:
+        - SubnetId: !Ref PUBLICSUBNET01
+        - SubnetId: !Ref PUBLICSUBNET01
+        - SubnetId: !Ref PUBLICSUBNET01
+        - SubnetId: !Ref PUBLICSUBNET01
+        - SubnetId: !Ref PUBLICSUBNET01
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 88ee2fdb-f41e-4fd0-8ed5-1b751b3f0301
+    DependsOn:
+      - ELBLB
+  EC2IL5JM:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      NetworkInterfaces:
+        - SubnetId: !Ref PUBLICSUBNET02
+        - SubnetId: !Ref PUBLICSUBNET02
+        - SubnetId: !Ref PUBLICSUBNET02
+        - SubnetId: !Ref PUBLICSUBNET02
+        - SubnetId: !Ref PUBLICSUBNET02
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: f942d329-c777-4e39-92e7-b6c173e6b3b8
+    DependsOn:
+      - ELBLB
+  CFDPRUTHVI:
+    Type: 'AWS::CloudFront::Distribution'
+    Properties: {}
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: a406254d-fa73-4897-9b1e-5ee41fe6c0b4
+    DependsOn:
+      - PRUS3BUCKET
+  SECURITYGPFORRDS:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      VpcId: !Ref PRUDHVIVPC
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 406705c8-91db-47f5-b5b0-db98cf9a25ba
+    DependsOn:
+      - RDSINSTANCE
+  RDSSECURITYGP:
+    Type: 'AWS::RDS::DBInstance'
+    Properties: {}
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 0bab14cb-1c50-46c0-840b-82008e6bd97d
+  RDSINSTANCE:
+    Type: 'AWS::RDS::DBSecurityGroup'
+    Properties:
+      DBSecurityGroupIngress:
+        - EC2SecurityGroupId: !Ref PRUDHVIVPC
+        - EC2SecurityGroupId: !Ref PRUDHVIVPC
+        - EC2SecurityGroupId: !Ref PRUDHVIVPC
+        - EC2SecurityGroupId: !Ref PRUDHVIVPC
+        - EC2SecurityGroupId: !Ref PRUDHVIVPC
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 0dc9c69a-d548-44f3-b76a-80df3bb8dad0
+    DependsOn:
+      - RDSSECURITYGP
+  ELBLB:
+    Type: 'AWS::ElasticLoadBalancing::LoadBalancer'
+    Properties: {}
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 1cd0fe13-20a0-4adf-b7e7-583b00c4da72
+    DependsOn:
+      - PRUDHVIIGW
+  IAMRBDT9:
+    Type: 'AWS::IAM::Role'
+    Properties: {}
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 857a9878-b7d9-49f3-b1ab-35fb790515dc
+    DependsOn:
+      - EC2I1SN4B
+  IAMR5252C:
+    Type: 'AWS::IAM::Role'
+    Properties: {}
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 9ab59cf7-9f3c-4bb8-ad1c-348d684b6b97
+    DependsOn:
+      - RDSINSTANCE
+  IAMR2PBMS:
+    Type: 'AWS::IAM::Role'
+    Properties: {}
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: df7ab131-7b6a-4a8e-b1ce-88b487f3b469
+    DependsOn:
+      - PRUS3BUCKET
+  IAMR4H8AG:
+    Type: 'AWS::IAM::Role'
+    Properties: {}
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: abf68f79-d68a-478d-81f5-174534ffc280
+    DependsOn:
+      - ELBLB
+  IAMR2M0J3:
+    Type: 'AWS::IAM::Role'
+    Properties: {}
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: b0eee731-1e76-44a2-a46a-9fa355785db6
+    DependsOn:
+      - PRUDHVIIGW
